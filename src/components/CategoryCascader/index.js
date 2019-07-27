@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { Cascader } from 'antd';
-import { getOpts } from '@/services/categoryManagement';
+import { getCategoriesOpts } from '@/services/enterprise/tool';
+import { getOpts } from '@/services/admin/categoryManagement';
+import { getCache, getCacheStatus } from '@/utils/cache';
+
+const status = getCacheStatus();
+const getCategoryOptions = status === 'enterprise' ? getCategoriesOpts : status === 'admin' ? getOpts : null;
 
 class CategoryCascader extends Component {
 
   state = {
     categories: [],
     value: [],
+    initialValue: []
   }
 
   componentDidMount() {
-    getOpts().then(res => {
+    const { initialValue } = this.props;
+    const cache = getCache();
+    const { companyToken } = cache;
+    getCategoryOptions({ companyToken }).then(res => {
       if (res && res.code === 0) {
-        this.setState({ categories: res.elems })
+        this.setState({
+          categories: res.elems,
+          initialValue,
+        })
       }
     })
   }
@@ -21,6 +33,7 @@ class CategoryCascader extends Component {
     // eslint-disable-next-line react/destructuring-assignment
     if (this.props.value !== nextProps.value) {
       this.setState({ value: nextProps.value })
+      this.setState({ initialValue: [] })
     }
   }
 
@@ -30,16 +43,10 @@ class CategoryCascader extends Component {
 
 
   renderCategoryTokens = (array) => {
-    const reg = /[\u4e00-\u9fa5]/;
     const { categories } = this.state;
     const result = [];
     if (array && array.length > 0) {
-      const change = array.map(i => reg.test(i)).every(j => j);
-      if (!change) {
-        return array;
-      }
-      const initCategory = array.map(i => i.replace(/\\/i, ''));
-      categories.forEach(category => initCategory.forEach(categoryName => {
+      categories.forEach(category => array.forEach(categoryName => {
         if (categoryName === category.categoryName) {
           result.push(category.token);
         }
@@ -49,14 +56,9 @@ class CategoryCascader extends Component {
   }
 
   renderCategoryNames = (array) => {
-    const reg = /[\u4e00-\u9fa5]/;
     const { categories } = this.state;
     const result = [];
     if (array && array.length > 0) {
-      const change = array.map(i => reg.test(i)).every(j => j);
-      if (change) {
-        return array;
-      }
       categories.forEach(category => array.forEach(token => {
         if (token === category.token) {
           result.push(category.categoryName);
@@ -95,13 +97,14 @@ class CategoryCascader extends Component {
   }
 
   render() {
-    const { categories, value } = this.state;
+    const { categories, value, initialValue } = this.state;
     const { changeOnSelect } = this.props;
-    const finallyValue = this.renderCategoryTokens(value);
+    const realValue = initialValue.length > 0 ? initialValue : value;
+    const finallyValue = this.renderCategoryTokens(realValue);
     return (
       <Cascader
-        changeOnSelect={changeOnSelect}
         value={finallyValue}
+        changeOnSelect={changeOnSelect}
         placeholder='请选择'
         fieldNames={{ label: 'categoryName', value: 'token', children: 'children' }}
         options={this.formatCategories(categories, "")}

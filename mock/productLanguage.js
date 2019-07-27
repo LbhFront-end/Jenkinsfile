@@ -2,7 +2,7 @@ import { parse } from 'url';
 import { CommonEnum } from '../src/utils/Enum'
 import mockjs from 'mockjs';
 
-const { CensorType, StateType, SaleType,ProhibitType } = CommonEnum;
+const { CensorType, StateType, SaleType, ProhibitType } = CommonEnum;
 const censor = Object.keys(CensorType);
 const censorLength = censor.length;
 const state = Object.keys(StateType);
@@ -10,7 +10,7 @@ const stateLength = state.length;
 const sale = Object.keys(SaleType);
 const saleLength = sale.length;
 const prohibit = Object.keys(ProhibitType);
-const prohibitLength = prohibit.length-1;
+const prohibitLength = prohibit.length - 1;
 
 // mock tableListDataSource
 const tableListDataSource = [];
@@ -21,11 +21,9 @@ for (let i = 1; i < 46; i += 1) {
     language: `语言${i}`,
     brand: `品牌${i}`,
     specs: `规格${i}`,
-    unit: `单位${i}`,
-    saleDate: "2019-06-06T10:21:31.841Z",
-    prohibit:prohibit[`${i%prohibitLength}`],
-    censor: censor[`${i%censorLength}`],
-    state: state[`${i%stateLength}`],
+    prohibit: prohibit[`${i % prohibitLength}`],
+    censor: censor[`${i % censorLength}`],
+    state: state[`${i % stateLength}`],
     token: `token${i}`,
   })
 }
@@ -82,8 +80,8 @@ function getProductLanguage(req, res, u) {
   return res.json(result);
 }
 
-const operation=(req,res)=>{
-  const {companyToken,languageTokens } = req.params;
+const operation = (req, res) => {
+  const { companyToken, languageTokens } = req.params;
   return res.json({
     "batchTotal": 0,
     "code": 0,
@@ -105,39 +103,90 @@ const operation=(req,res)=>{
 }
 
 export default {
-  // 商品获取列表（默认）
-  'GET /admin/product/languages': getProductLanguage,
-  // 商品获取列表（回收站）
-  'GET /admin/product/languages/recycle': getProductLanguage,
-  // 商品获取单项（详情）
-  'GET /admin/product/language/:languageToken/detail': (req,res)=>{
-    const {companyToken,languageToken} = req.params;
+  // 商品语言获取列表（默认）
+  'GET /enterprise/company/:companyToken/product/languages': getProductLanguage,
+  // 商品语言获取列表（回收站）
+  'GET /enterprise/company/:companyToken/product/languages/recycle': getProductLanguage,
+  // 商品语言获取单项（表单）
+  'GET /enterprise/company/:companyToken/product/language/:languageToken/form': (req, res) => {
+    const { companyToken, languageToken } = req.params;
+    res.send({
+      "code": 0,
+      "elemTotal": 0,
+      "elem": {
+        "brand": "品牌1",
+        "description": "描述1",
+        "language": "ZH_CN",
+        "productName": "商品名",
+        "saleDate": "2019-06-16T05:24:25.161Z",
+        "specs": "规格1",
+        "unit": "单位1"
+      },
+      "page": 0,
+      "pageTotal": 0,
+      "size": 0
+    })
+  },
+  // 商品语言添加
+  'POST /enterprise/company/:companyToken/product/:productToken/language': (req, res) => {
+    const { companyToken } = req.params;
+    const {
+      brand,
+      description,
+      language,
+      productName,
+      saleDate,
+      specs,
+      unit,
+    } = req.body;
     res.send({
       "code": 0,
       "elem": {
-        "brand": "品牌",
-        "censor": "DISABLE",
-        "description": "描述",
-        "language": "ZH_CN",
-        "productName": "商品名",
-        "prohibit": "TRUE",
-        "saleDate": "2019-06-11T07:35:22.659Z",
-        "specs": "规格",
-        "state": "DISABLE",
-        "token": "string",
-        "unit": "单位"
+        brand,
+        description,
+        language,
+        productName,
+        saleDate,
+        specs,
+        unit,
       },
-      "records": [
-        {}
-      ]
+      "token": "string"
+    })
+  },
+  // 商品语言更新
+  'PUT /enterprise/company/:companyToken/product/language/:languageToken': (req, res) => {
+    const { companyToken } = req.params;
+    const {
+      brand,
+      description,
+      language,
+      productName,
+      saleDate,
+      specs,
+      unit,
+    } = req.body;
+    res.send({
+      "code": 0,
+      "elem": {
+        brand,
+        description,
+        language,
+        productName,
+        saleDate,
+        specs,
+        unit,
+      },
+      "token": "string"
     })
   },
 
-  // 商品操作：审核（通过驳回）、启用、禁用
-  'PATCH /admin/product/language/:languageTokens/censor/pass': operation,
-  'PATCH /admin/product/language/:languageTokens/censor/return': operation,
-  'PATCH /admin/product/language/:languageTokens/prohibit/off': operation,
-  'PATCH /admin/product/language/:languageTokens/prohibit/on': operation,
+  // 商品语言操作：删除/锁定/解锁/清除/还原/解锁/
+  'PATCH /enterprise/company/:companyToken/language/:languageTokens/state/delete': operation,
+  'PATCH /enterprise/company/:companyToken/language/:languageTokens/state/lock': operation,
+  'PATCH /enterprise/company/:companyToken/language/:languageTokens/state/redelete': operation,
+  'PATCH /enterprise/company/:companyToken/language/:languageTokens/state/revert': operation,
+  'PATCH /enterprise/company/:companyToken/language/:languageTokens/state/unlock': operation,
+
 
 }
 

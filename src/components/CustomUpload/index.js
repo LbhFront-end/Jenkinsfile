@@ -1,9 +1,11 @@
 import React from "react";
 import { Upload, Icon, Modal, message } from "antd";
-// import { upload } from '@/services/tool';
+import { upload } from '@/services/enterprise/tool';
+import { getCache } from '@/utils/cache';
 
 const imgPrefix = 'http://pimg.21silkroad.com';
-const companyToken = localStorage.getItem('companyToken');
+const cache = getCache();
+const { companyToken } = cache;
 
 class CustomUpload extends React.Component {
   state = {
@@ -28,7 +30,7 @@ class CustomUpload extends React.Component {
   }
 
   handleChange = ({ fileList }) => {
-    this.setState({ fileList })
+    this.setState({ fileList: this.formatRemoveList(fileList) })
   }
 
   beforeUpload = (file) => {
@@ -52,7 +54,8 @@ class CustomUpload extends React.Component {
     formData.append('files', file);
     upload({ companyToken, type, formData, }).then(res => {
       if (res && res && res.code === 0) {
-        const original = fileList.length > 0 ? fileList : initFileList || fileList;
+        let original = fileList.length > 0 ? fileList : initFileList || fileList;
+        original = this.formatRemoveList(original);
         const result = this.formatFileList({ original, files: res.elems, maxNum });
         this.setState({ fileList: result }, () => {
           // eslint-disable-next-line react/destructuring-assignment
@@ -64,7 +67,7 @@ class CustomUpload extends React.Component {
   }
 
   formatFileList = (props) => {
-    // const { fileList } = this.state;
+    const { fileList } = this.state;
     const { files, maxNum, original } = props;
     let result = []
     if (original.length < maxNum) {
@@ -82,10 +85,12 @@ class CustomUpload extends React.Component {
     return result;
   }
 
+  formatRemoveList = (list = []) => list.filter(i => i.status === 'done')
+
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
     const { listType = "picture-card", multiple = false, maxNum = 1, withCredentials = true, disabled, initFileList } = this.props;
-    const realFileList = fileList.length > 0 ? fileList : initFileList || fileList;
+    const realFileList = fileList.length > 0 ? fileList : this.formatRemoveList(initFileList) || fileList;
     return (
       <div className="clearfix">
         <Upload

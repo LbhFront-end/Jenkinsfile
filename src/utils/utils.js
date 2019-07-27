@@ -193,6 +193,7 @@ export function rsa(value, publicKey) {
   Encrypt.setPublicKey(publicKey);
   return Encrypt.encrypt(value);
 }
+
 // export function isAntdPro() {
 //   return window.location.hostname === 'preview.pro.ant.design';
 // }

@@ -2,7 +2,7 @@
 import os from 'os';
 import pageRoutes from './router.config';
 import webpackPlugin from './plugin.config';
-import defaultSettings from '../src/defaultSettings';
+import defaultSettings from '../src/utils/defaultSettings';
 
 export default {
   // add for transfer to umi
@@ -27,12 +27,12 @@ export default {
         },
         ...(!process.env.TEST && os.platform() === 'darwin'
           ? {
-              dll: {
-                include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
-                exclude: ['@babel/runtime'],
-              },
-              hardSource: true,
-            }
+            dll: {
+              include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
+              exclude: ['@babel/runtime'],
+            },
+            hardSource: true,
+          }
           : {}),
       },
     ],
@@ -95,9 +95,9 @@ export default {
     },
   },
   manifest: {
-    name: 'ant-design-pro',
+    name: '21silkroad',
     background_color: '#FFF',
-    description: 'An out-of-box UI solution for enterprise applications as a React boilerplate.',
+    // description: 'An out-of-box UI solution for enterprise applications as a React boilerplate.',
     display: 'standalone',
     start_url: '/index.html',
     icons: [
@@ -108,9 +108,9 @@ export default {
       },
     ],
   },
-  base: "/admin/",
-  publicPath: "/admin/",
-  cssPublicPath: "/admin/",
+  // base: "/enterprise/",
+  // publicPath: "/enterprise/",
+  // cssPublicPath: "/enterprise/",
   chainWebpack: webpackPlugin,
   cssnano: {
     mergeRules: false,

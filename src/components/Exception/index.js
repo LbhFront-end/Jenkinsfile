@@ -4,10 +4,29 @@ import { Button } from 'antd';
 import config from './typeConfig';
 import styles from './index.less';
 
+const url = window.location.href;
+
+let redirect = '/';
+let backText = '返回登录页';
+let desc = '抱歉，您还没有登录';
+
+if (url.includes('enterprise')) {
+  const enterpriseCache = localStorage.getItem('enterpriseCache')
+  redirect = enterpriseCache ? '/enterprise/' : '/enterprise/user/login';
+} else if (url.includes('admin')) {
+  const adminCache = localStorage.getItem('adminCache')
+  redirect = adminCache ? '/admin/' : '/admin/user/login';
+} else {
+  redirect = '/';
+  backText = '返回首页';
+  desc = '抱歉，您无权访问该页面'
+}
+
+
 class Exception extends React.PureComponent {
   static defaultProps = {
-    backText: 'back to home',
-    redirect: '/',
+    backText,
+    redirect,
   };
 
   constructor(props) {
@@ -18,14 +37,13 @@ class Exception extends React.PureComponent {
   render() {
     const {
       className,
-      backText,
+      // backText,
       linkElement = 'a',
       type,
       title,
-      desc,
+      // desc,
       img,
       actions,
-      redirect,
       ...rest
     } = this.props;
     const pageType = type in config ? type : '404';

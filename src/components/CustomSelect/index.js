@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Select, Pagination, Spin } from 'antd';
 import PropTypes from 'prop-types';
+import { getCache } from '@/utils/cache';
 
 const { Option } = Select;
-const companyToken = localStorage.getItem('companyToken');
-
+const cache = getCache();
+const { companyToken = "" } = cache;
 export default class CustomSelect extends Component {
   static propTypes = {
     pageSize: PropTypes.number,
@@ -60,7 +61,7 @@ export default class CustomSelect extends Component {
     })
       .then(res => {
         this.setState({ loading: false })
-        if (res && res.code === 0) {
+        if (res && res && res.code === 0) {
           this.setState({ optionList: res.elems, total: res.elemTotal });
         }
       })

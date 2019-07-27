@@ -13,7 +13,7 @@ class CityMapChart extends React.Component {
   }
 
   componentDidMount() {
-    const { url } = this.props;
+    const {url} = this.props;
     require(`echarts/map/js/province/${url}.js`)
     // if (this.timeTicket) {
     //   clearInterval(this.timeTicket)
@@ -24,8 +24,8 @@ class CityMapChart extends React.Component {
     // }, 1000)
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { url } = nextProps;
+  componentWillReceiveProps(nextProps){
+    const {url} = nextProps;
     require(`echarts/map/js/province/${url}.js`)
   }
 
@@ -35,14 +35,8 @@ class CityMapChart extends React.Component {
     }
   }
 
-  getOption = () => {
-    const { map, dataSource, fieldNames } = this.props;
-    const data = [];
-    if (dataSource) {
-      dataSource.forEach(i => {
-        data.push({ value: i[fieldNames.value], name: i[fieldNames.name] })
-      })
-    }
+  render() {
+    const {map,url} = this.props;
     const option = {
       title: {
         text: `${map}用户数`,
@@ -92,7 +86,7 @@ class CityMapChart extends React.Component {
       },
       series: [
         {
-          name: `${map}用户数`,
+          name:`${map}用户数`,
           type: 'map',
           mapType: map,
           roam: false,
@@ -104,30 +98,24 @@ class CityMapChart extends React.Component {
               show: false,
             },
           },
-          data,
-          // data: [
-          //   {
-          //     "value": "11",
-          //     "name": "揭阳市"
-          //   },
-          //   {
-          //     "value": "12",
-          //     "name": "佛山市"
-          //   },
-          // ],
+          data: [
+            {
+              "value": "11",
+              "name": "揭阳市"
+            },
+            {
+              "value": "12",
+              "name": "佛山市"
+            },
+          ],
         },
       ],
     }
-    return option;
-  }
-
-  render() {
-
     return (
       <div className="examples">
         <div className="parent">
           <ReactEcharts
-            option={this.getOption()}
+            option={option}
             style={{ height: '800px', width: '100%' }}
             className="react_for_echarts"
           />

@@ -64,7 +64,7 @@ class ConditionQuery extends Component {
           <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
             重置
           </Button>
-          {modalFormConfig.length >= 3 ? btn : null}
+          {modalFormConfig.length > 3 ? btn : null}
         </div>
       </div>
     );

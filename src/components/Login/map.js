@@ -8,6 +8,7 @@ export default {
       size: 'large',
       prefix: <Icon type="user" className={styles.prefixIcon} />,
       placeholder: 'admin',
+      allowClear:true
     },
     rules: [
       {
@@ -22,6 +23,7 @@ export default {
       prefix: <Icon type="lock" className={styles.prefixIcon} />,
       type: 'password',
       placeholder: '888888',
+      allowClear:true
     },
     rules: [
       {

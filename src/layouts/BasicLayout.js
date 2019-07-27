@@ -17,7 +17,7 @@ import ec6Logo from '../assets/ec6.svg';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
-import Exception403 from '../pages/Exception/403';
+import Exception403 from '../pages/enterprise/Exception/403';
 
 const { Content } = Layout;
 

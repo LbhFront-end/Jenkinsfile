@@ -1,4 +1,4 @@
-import { queryFakeList, removeFakeList, addFakeList, updateFakeList } from '@/services/api';
+import { queryFakeList, removeFakeList, addFakeList, updateFakeList } from '@/services/enterprise/api';
 
 export default {
   namespace: 'list',

@@ -8,7 +8,7 @@ export default{
         companyToken,
         "address": "详细地址详细地址详细地址详细地址（不为空，长度小于200）",
         "cellphone": "188260798632",
-        "companyName": "企业名称（长度小于100）",
+        "companyName": "企业名（长度小于100）",
         "contacts": "联系人（长度小于50）",
         "description": "企业简介企业简介企业简介企业简介企业简介（长度小于500）",
         "email": "7974321378@qq.com",
@@ -34,7 +34,7 @@ export default{
       "elem": {
         "address": "详细地址详细地址详细地址详细地址详细地址",
         "cellphone": "188454578",
-        "companyName": "企业名称企业名称",
+        "companyName": "企业名企业名",
         "contacts": "联系人A",
         "description": "企业简介企业简介简介简介企业简介企业简介简介简介",
         "email": "479127894@qq.com",
@@ -197,7 +197,7 @@ export default{
       "code": 0,
       "elem": {
         "address": "详细地址详细地址",
-        "companyName": "企业名称企业名称",
+        "companyName": "企业名企业名",
         "contacts": "联系人",
         "description": "企业简介",
         "foundedDate": "2019-06-11T03:03:06.378Z",

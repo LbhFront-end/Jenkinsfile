@@ -12,8 +12,8 @@ export default class SearchSelect extends Component {
     dataList: PropTypes.array,
     searchType: PropTypes.string.isRequired,
     getdataList: PropTypes.func.isRequired,
-    optionFieldNames: PropTypes.object,
-    onSelect: PropTypes.func,
+    optionFieldNames:PropTypes.object,
+    onSelect:PropTypes.func,
   }
 
   static defaultProps = {
@@ -26,7 +26,7 @@ export default class SearchSelect extends Component {
       value: 'id',
       label: 'name',
     },
-    onSelect: () => { },
+    onSelect: ()=>{},
   }
 
   handlePaging = (e) => {
@@ -39,13 +39,13 @@ export default class SearchSelect extends Component {
 
   handleSearch = (value) => {
     const { getdataList, searchType } = this.props;
-    getdataList({ [searchType]: value });
+    getdataList({[searchType]: value});
   }
 
   render() {
     const { total, index, pageSize, dataList, onSelect, optionFieldNames, value, ...leftProps } = this.props;
-    const { key, value: val, label } = { key: 'id', value: 'id', label: 'name', ...optionFieldNames };
-    const options = dataList.length > 0 ? dataList.map(opt => (
+    const { key, value:val, label } = { key: 'id', value: 'id', label: 'name', ...optionFieldNames };
+    const options = dataList.length>0?dataList.map(opt => (
       <Option key={opt[key]} value={`${opt[val]}`}>
         {opt[label]}
       </Option>
@@ -68,7 +68,7 @@ export default class SearchSelect extends Component {
           <Icon type="right" theme="outlined" />
         </a>
       </Option>,
-    ]) : [<Option key='null' disabled>找不到匹配项</Option>];
+      ]):[<Option key='null' disabled>找不到匹配项</Option>];
 
     return (
       <AutoComplete

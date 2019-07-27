@@ -40,6 +40,7 @@ export default class ModalForm extends PureComponent {
       form: { getFieldDecorator },
     } = this.props;
     const style = compact ? { margin: 0 } : {};
+
     return (
       <Form layout="inline" className={styles.tableListForm} style={style}>
         <Row gutter={gutter}>
@@ -188,7 +189,7 @@ export default class ModalForm extends PureComponent {
                 return (
                   <Col {...colConfig}>
                     <FormItem {...formItemConfig}>
-                      {getFieldDecorator(fieldId, { rules, initialValue: initV })(
+                      {getFieldDecorator(fieldId, { rules, initialValue: initV || [] })(
                         <RegionCascader {...fieldProps} />
                       )}
                     </FormItem>
@@ -199,7 +200,7 @@ export default class ModalForm extends PureComponent {
                   <Col {...colConfig}>
                     <FormItem {...formItemConfig}>
                       {getFieldDecorator(fieldId, { rules, initialValue: initV })(
-                        <CategoryCascader {...fieldProps} initialValue={initialValue} />
+                        <CategoryCascader {...fieldProps} initialValue={initV || []} />
                       )}
                     </FormItem>
                   </Col>

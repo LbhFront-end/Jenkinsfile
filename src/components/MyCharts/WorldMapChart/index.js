@@ -27,7 +27,6 @@ class WorldMapChart extends React.Component {
   //     clearInterval(this.timeTicket)
   //   }
   // }
-
   getOption = ()=>{
     const {dataSource,fieldNames} = this.props;
     const data = [];

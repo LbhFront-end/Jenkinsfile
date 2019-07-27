@@ -21,16 +21,16 @@ const codeMessage = {
   403: '用户得到授权，但是访问是被禁止的。',
   403001: '网关超时。',
   404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
-  404001: '对象不存在',
+  404001: '不存在',
   406: '请求的格式不可得。',
-  409002: '对象不可编辑',
-  409003: '对象编辑超时',
+  409002: '不可编辑',
+  409003: '编辑超时',
   409101: '批处理不可操作',
   409301: '级数超出设置',
   409302: '级数不等于设置',
   410: '请求的资源被永久删除，且不会再得到的。',
   417001: '见响应字段 message',
-  422: '当创建一个对象时，发生一个验证错误。',
+  422: '当创建一个时，发生一个验证错误。',
   500: '服务器发生错误，请检查服务器。',
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
@@ -58,8 +58,16 @@ const errorHandler = error => {
   const { response = {}, data } = error;
   const errortext = codeMessage[response.status] || response.statusText;
   const { status, url } = response;
-  const description = data.message || errortext;
+  const description = data.message || codeMessage[data.code] || errortext;
   if (statusReg.test(status)) {
+    if (status === 401) {
+      notification.error({
+        message: description,
+        duration: 3,
+        onClose: router.push('/enterprise/user/login')
+      })
+      return;
+    }
     notification.error({
       message: description,
     })
@@ -68,7 +76,7 @@ const errorHandler = error => {
   // 生产
   notification.error({
     message: "服务器繁忙",
-    description:"请稍后再试",
+    description: "请稍后再试",
   })
 }
 

@@ -77,11 +77,9 @@ export default {
   'menu.productLanguage': '商品语言管理',
   'menu.categoryManagement': '分类管理',
   'menu.categoryLanguageManagement': '分类语言管理',
+  'menu.askManagement': '询问管理',
   'menu.email': '邮箱管理',
   'menu.emailTemplate': '邮箱模板管理',
-
-  // 'menu.product.detailPage': '商品详情页',
-  'menu.askManagement': '询问管理',
   'menu.dataAnalysis': '数据分析',
   'menu.dataAnalysis.commodityGrowth': '商品增长',
   'menu.dataAnalysis.askAboutGrowth': '询问增长',

@@ -44,6 +44,10 @@ const MockSelect = {
     { value: 'PASS', label: 'PASS' },
     { value: 'UNPASS', label: 'UNPASS' },
   ],
+  prohbitSelect: [
+    { value: true, label: '是' },
+    { value: false, label: '否' },
+  ],
   marketSelect: [
     { value: '市场1', label: '市场1' },
     { value: '市场2', label: '市场3' },
@@ -59,8 +63,8 @@ const MockSelect = {
   ],
   languageSelect: [
     { value: 'EN', label: '英文' },
-    { value: 'ZH_CN', label: '中文' },
-    // { value: 'ZH_TW', label: '中国台湾' },
+    { value: 'ZH_CN', label: '中文(简体)' },
+    { value: 'ZH_TW', label: '中文(繁体)' },
   ],
   countrySelect: [
     { value: '国家1', label: '国家1' },
@@ -234,7 +238,7 @@ const AllButtonConfig = {
   },
   Prohibit: {
     ON: { actionName: '禁用', action: 'on', prefix: 'prohibit' },
-    OFF: { actionName: '启用', action: 'off', prefix: 'prohibit' },
+    OFF: { actionName: '解禁', action: 'off', prefix: 'prohibit' },
   },
   Change: {
     EDIT: { actionName: '编辑', action: 'form' },
@@ -306,11 +310,12 @@ const BatchButtonConfig = {
       FALSE: { actionName: '禁用', action: 'on', prefix: 'prohibit', boolean: false },
     },
     OFF: {
-      TRUE: { actionName: '启用', action: 'off', prefix: 'prohibit', boolean: true },
-      FALSE: { actionName: '启用', action: 'off', prefix: 'prohibit', boolean: false },
+      TRUE: { actionName: '解禁', action: 'off', prefix: 'prohibit', boolean: true },
+      FALSE: { actionName: '解禁', action: 'off', prefix: 'prohibit', boolean: false },
     },
   },
 }
+
 
 const TimeRange = [
   { value: 'SEVEN', desc: '最近7天' },
@@ -325,11 +330,12 @@ const Source = [
   { name: '佛山市服务贸易共享平台', value: 'FS_SHARE' },
 ]
 
+
 export {
-  Source,
   CommonEnum,
   MockSelect,
   AllButtonConfig,
   BatchButtonConfig,
-  TimeRange
+  TimeRange,
+  Source
 }

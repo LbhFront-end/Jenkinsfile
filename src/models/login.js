@@ -1,16 +1,45 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { login, logout } from '@/services/security';
+// import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
 import { message } from 'antd';
+import { loginEnterprise, logoutEnterprise } from '@/services/enterprise/security';
+import { loginAdmin, logoutAdmin } from '@/services/admin/security';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery, rsa } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import { setCache } from '@/utils/cache';
+
+const url = window.location.href;
+let conflictParams = {
+  login: null,
+  logout: null,
+  redirectFinal: '/',
+  pathname: '/'
+};
+if (url.includes('enterprise')) {
+  conflictParams = {
+    login: loginEnterprise,
+    redirectFinal: '/enterprise',
+    logout: logoutEnterprise,
+    pathname: '/enterprise/user/login'
+  }
+} else if (url.includes('admin')) {
+  conflictParams = {
+    login: loginAdmin,
+    redirectFinal: '/admin',
+    logout: logoutAdmin,
+    pathname: '/admin/user/login'
+  }
+}
+
+const { login, redirectFinal, logout, pathname } = conflictParams;
+
 
 export default {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    code: undefined,
   },
 
   effects: {
@@ -27,12 +56,9 @@ export default {
           type: 'changeLoginStatus',
           payload: response,
         });
-        const { imageUrl, userName,companyName } = response.elem;
-        localStorage.setItem('companyName', companyName)
-        localStorage.setItem('userName', userName)
-        localStorage.setItem('avatar', imageUrl)
+        setCache(response.elem);
         reloadAuthorized();
-        const urlParams = new URL(window.location.href);
+        const urlParams = new URL(url);
         const params = getPageQuery();
         let { redirect } = params;
         if (redirect) {
@@ -48,13 +74,9 @@ export default {
           }
         }
         message.success('登录成功')
-        yield put(routerRedux.replace(redirect || '/'));
+        yield put(routerRedux.replace(redirect || redirectFinal));
       }
     },
-
-    // *getCaptcha({ payload }, { call }) {
-    //   yield call(getFakeCaptcha, payload);
-    // },
 
     *logout(_, { call, put }) {
       yield call(logout);
@@ -64,29 +86,26 @@ export default {
         type: 'changeLoginStatus',
         payload: {
           status: false,
-          currentAuthority: 'guest',
+          currentAuthority: 'user',
         },
       });
       reloadAuthorized();
-      yield put(
-        routerRedux.push({
-          pathname: '/user/login',
-        })
-      );
+      yield put(routerRedux.push({ pathname }));
     },
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
+      let authorityCharacter = 'user';
       if (payload.elem) {
-        if (payload.elem.root) {
-          setAuthority('admin');
-        } else {
-          setAuthority('user');
+        const { root } = payload.elem;
+        if (url.includes('enterprise')) {
+          authorityCharacter = root ? 'enterprise_root' : 'enterprise';
+        } else if (url.includes('admin')) {
+          authorityCharacter = root ? 'admin_root' : 'admin';
         }
-      } else {
-        setAuthority('guest');
       }
+      setAuthority(authorityCharacter);
       return {
         ...state,
         code: payload.code,

@@ -1,5 +1,7 @@
-import { query as queryUsers, queryCurrent } from '@/services/user';
+import { query as queryUsers, queryCurrent } from '@/services/enterprise/user';
 
+
+// const companyToken = localStorage.getItem('companyToken')
 const userName = localStorage.getItem('userName')
 const avatar = localStorage.getItem('avatar')
 
@@ -20,11 +22,10 @@ export default {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      // const response = yield call(queryCurrent);
       yield put({
         type: 'saveCurrentUser',
         payload: {
-          name:userName,
+          name: userName,
           avatar
         },
       });
@@ -42,12 +43,13 @@ export default {
       return {
         ...state,
         currentUser: {
-          name:action.payload.name || '',
-          avatar:action.payload.avatar || '',
+          name: action.payload.name || '',
+          avatar: action.payload.avatar || '',
         }
       };
     },
     changeNotifyCount(state, action) {
+
       return {
         ...state,
         currentUser: {

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import defaultSettings from '../defaultSettings';
+import defaultSettings from '../utils/defaultSettings';
 
 let lessNodesAppended;
 const updateTheme = primaryColor => {

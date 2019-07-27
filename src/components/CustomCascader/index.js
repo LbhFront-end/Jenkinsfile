@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getCategoryData, getRegionData } from '@/services/api';
-import {  Cascader } from 'antd';
+import { getCategoryData, getRegionData } from '@/services/enterprise/api';
+import { Cascader } from 'antd';
 
 class CustomCascader extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ class CustomCascader extends Component {
     if (state.ids.length === 0) initState.ids = value;
     initState.getData = type === 'category' ? getCategoryData : getRegionData;
 
-    return {...initState};
+    return { ...initState };
   }
 
   state = {
@@ -45,7 +45,7 @@ class CustomCascader extends Component {
             if (opt.id === v[type][0].id) options[index][type] = v[type][0][type];
           });
         }).then(() => {
-          this.setState({options:[...options]})
+          this.setState({ options: [...options] })
         })
       }
     })
@@ -71,7 +71,7 @@ class CustomCascader extends Component {
   // 根据所选分类获取 分类属性-属性值 列表
   onChange = (value, selectedOptions) => {
     if (selectedOptions.length === 3) {
-      this.setState({ids:value})
+      this.setState({ ids: value })
       this.triggerChange(value, selectedOptions)
     }
   }

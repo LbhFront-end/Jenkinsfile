@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { formatTime } from '@/utils/commonFunction'
-
+import { formatTime } from '@/utils/enterprise/commonFunction'
 // require('./theme/macarons.js')
 const colorPalette = [
   '#008acd',
@@ -34,7 +33,7 @@ class Bar extends Component {
 
 
   getOption = () => {
-    const { dataSource,type } = this.props;
+    const { dataSource, type } = this.props;
     const date = [];
     const count = [];
     if (dataSource.length > 0) {
@@ -60,14 +59,14 @@ class Bar extends Component {
       xAxis: [{
         type: 'category',
         data: date,
-        axisLabel : {
+        axisLabel: {
           // formatter: '{value} 次',
         }
       }],
       yAxis: {
         type: 'value',
-        axisLabel : {
-          formatter: '{value}',
+        axisLabel: {
+          formatter: '{value} 次',
         }
       },
       series: [{

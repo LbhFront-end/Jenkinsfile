@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { formatMessage } from 'umi/locale';
+// import { formatMessage } from 'umi/locale';
 import Link from 'umi/link';
 import { Icon } from 'antd';
 import GlobalFooter from '@/components/GlobalFooter';
@@ -45,6 +45,8 @@ class UserLayout extends React.PureComponent {
 
   render() {
     const { children } = this.props;
+    const url = window.location.href
+    const appName = url.includes('enterprise') ? '企业端' : url.includes('admin') ? '运营端' : null
     return (
       // @TODO <DocumentTitle title={this.getPageTitle()}>
       <div className={styles.container}>
@@ -54,12 +56,12 @@ class UserLayout extends React.PureComponent {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
+              <Link to="/enterprise">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>运营端</span>
+                <span className={styles.title}>{appName}</span>
               </Link>
             </div>
-            {/* <div className={styles.desc}>M2B 运营端 是佛山最具影响力的 xx 规范</div> */}
+            {/* <div className={styles.desc}>M2B 企业端 是佛山最具影响力的 xx 规范</div> */}
           </div>
           {children}
         </div>
